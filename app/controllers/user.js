@@ -46,4 +46,10 @@ export default class User {
       }
     }
   }
+
+  static async info (ctx, next) {
+    return ctx.body = {
+      success: false
+    }
+  }
 }

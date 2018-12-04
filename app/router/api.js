@@ -9,6 +9,7 @@ router.prefix('/api/v1')
 /** user **/
 const USER_BASE_URL = '/user'
 router.post(USER_BASE_URL + '/avatar', user.avatar)
+router.get(USER_BASE_URL + '/info', user.info)
 
 /** goods **/
 const GOODS_BASE_URL = '/goods'
