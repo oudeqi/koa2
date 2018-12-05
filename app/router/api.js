@@ -1,15 +1,18 @@
 // router.js
 import Router from 'koa-router'
-import goods from '../controllers/goods'
-import user from '../controllers/user'
+import goods from '../controllers/goods.ctr'
+import user from '../controllers/user.ctr'
 
 const router = new Router
 router.prefix('/api/v1')
 
 /** user **/
 const USER_BASE_URL = '/user'
-router.post(USER_BASE_URL + '/avatar', user.avatar)
 router.get(USER_BASE_URL + '/info', user.info)
+router.get(USER_BASE_URL + '/list', user.list)
+router.post(USER_BASE_URL + '/register', user.register)
+router.post(USER_BASE_URL + '/login', user.login)
+router.post(USER_BASE_URL + '/avatar', user.avatar)
 
 /** goods **/
 const GOODS_BASE_URL = '/goods'

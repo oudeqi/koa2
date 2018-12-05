@@ -10,9 +10,16 @@ import logger from 'koa-logger'
 import helmet from 'koa-helmet'
 import nunjucks from 'koa-nunjucks-2'
 
+// 导入配置
+import { mongodb } from './config'
+import connectDB from './app/models/connect'
+
 // 导入 rouer.js 文件
 import api from './app/router/api'
 import page from './app/router/page'
+
+// 连接数据库
+connectDB(mongodb)
 
 const app = new Koa()
 
@@ -34,7 +41,7 @@ app.use(cors({ credentials: true }))
 // 安全
 app.use(helmet())
 // 静态资源服务器
-app.use(koaStatic(__dirname + '/app/public'))
+app.use(koaStatic(__dirname + '/static'))
 // session
 app.use(session(app))
 // 解析 sequest body
@@ -45,9 +52,6 @@ app.use(body({
     maxFileSize: 200 * 1024 * 1024
   }
 }))
-
-console.log('process.env.NODE_ENV')
-console.log(process.env.NODE_ENV)
 // Must be used before any router is used
 app.use(nunjucks({
   ext: 'html',
