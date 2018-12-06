@@ -10,8 +10,6 @@ export default class User {
 
   // 获取用户信息
   static async info (ctx, next) {
-    console.log('ctx.session.user')
-    console.log(ctx.session.user)
     if (ctx.session.user) {
       return ctx.body = {
         success: true,
@@ -23,15 +21,28 @@ export default class User {
         msg: '登录超时'
       }
     }
-    
   }
-
-  // 获取用户列表
-  static async list (ctx, next) {
-    const list = await UserModel.find({})
-    return ctx.body = {
-      success: true,
-      data: list
+  
+  // 完善用户信息
+  static async update (ctx, next) {
+    const currentUser = ctx.session.user 
+    if (currentUser) {
+      const info = ctx.request.body
+      const res = await UserModel.findByIdAndUpdate(currentUser._id, info)
+      return ctx.body = {
+        success: true,
+        data: {
+          ...info, 
+          _id: res._id,
+          user: res.user,
+          type: res.type,
+        }
+      }
+    } else {
+      return ctx.body = {
+        success: false,
+        msg: '登录超时'
+      }
     }
   }
 
@@ -82,7 +93,15 @@ export default class User {
         }
       }
     }
-    
+  }
+  
+  // 获取用户列表
+  static async list (ctx, next) {
+    const list = await UserModel.find({})
+    return ctx.body = {
+      success: true,
+      data: list
+    }
   }
 
   static async avatar (ctx) {

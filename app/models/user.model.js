@@ -11,10 +11,5 @@ const UserSchema = new mongoose.Schema({
   money: {type: String}, // boss字段
 })
 
-// static md5 (pwd) {
-
-// }
 const User = mongoose.model('User', UserSchema)
-console.log('User model')
-
 export default User
