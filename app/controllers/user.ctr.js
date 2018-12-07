@@ -80,7 +80,9 @@ export default class User {
       const encrypt = UserService.encrypt(pwd)
       const newUser = new UserModel({user, type, pwd:encrypt})
       const created = await newUser.save()
+      console.log('created------\n', created)
       if (created) {
+        ctx.session.user = created
         const {user, type, _id} = created
         return ctx.body = {
           success: true,
