@@ -8,6 +8,16 @@ const _filter = { pwd: 0, __v: 0 }
 
 export default class User {
 
+  // 获取用户列表
+  static async list (ctx, next) {
+    const { type } = ctx.request.query
+    const list = await UserModel.find({type})
+    return ctx.body = {
+      success: true,
+      data: list
+    }
+  }
+
   // 获取用户信息
   static async info (ctx, next) {
     if (ctx.session.user) {
@@ -94,15 +104,6 @@ export default class User {
           msg: '未知错误'
         }
       }
-    }
-  }
-  
-  // 获取用户列表
-  static async list (ctx, next) {
-    const list = await UserModel.find({})
-    return ctx.body = {
-      success: true,
-      data: list
     }
   }
 
