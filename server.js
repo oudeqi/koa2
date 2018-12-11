@@ -37,6 +37,7 @@ io.on('connection', (socket) => {
     console.log(data)
     io.emit('receive', data)
   })
+  
 });
 
 // 在使用 koa-session 之前，必须需要指定一个私钥
