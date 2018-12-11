@@ -18,10 +18,26 @@ import connectDB from './app/models/connect'
 import api from './app/router/api'
 import page from './app/router/page'
 
+// socket.io
+import http from 'http'
+import socketIO from 'socket.io'
+
 // 连接数据库
 connectDB(mongodb)
 
 const app = new Koa()
+const server = http.createServer(app.callback())
+const io = socketIO(server)
+
+io.on('connection', (socket) => {
+  console.log('socket connected --------------------')
+  console.log(socket.client.request.headers)
+
+  socket.on('send', (data) => {
+    console.log(data)
+    io.emit('receive', data)
+  })
+});
 
 // 在使用 koa-session 之前，必须需要指定一个私钥
 // 用于加密存储在 session 中的数据
@@ -73,7 +89,9 @@ app.on('error', (err, ctx) => {
 });
 
 // 启动一个 http 服务器，并监听 3000 端口
-app.listen(4000)
+server.listen(4000, () => {
+  console.log(`server start at port 4000`)
+})
 
 // 导出 koa 实例（用于测试）
 export default app
