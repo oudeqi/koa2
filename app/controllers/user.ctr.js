@@ -3,10 +3,35 @@
 import {updateFile} from '../service/file'
 import UserModel from '../models/user.model'
 import UserService from '../service/user.service'
+import ChatModel from '../models/chat.model'
 
 const _filter = { pwd: 0, __v: 0 }
 
 export default class User {
+
+  // 用户消息列表
+  static async msgList (ctx, next) {
+    const user = ctx.session.user
+    const users = {}
+    const allUser = await UserModel.find({})
+    allUser.forEach(item => {
+      users[item._id] = {
+        name: item.user,
+        avatar: item.avatar
+      }
+    })
+    const list = await ChatModel.find({
+      $or: [
+        { from: user._id },
+        { to: user._id }
+      ]
+    })
+    return ctx.body = {
+      success: true,
+      chat: list,
+      users: users
+    }
+  }
 
   // 获取用户列表
   static async list (ctx, next) {

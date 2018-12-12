@@ -15,6 +15,8 @@ router.post(USER_BASE_URL + '/login', user.login)
 router.post(USER_BASE_URL + '/update', user.update)
 router.post(USER_BASE_URL + '/avatar', user.avatar)
 
+router.get(USER_BASE_URL + '/msg/list', user.msgList)
+
 /** goods **/
 const GOODS_BASE_URL = '/goods'
 router.get(GOODS_BASE_URL, user.validator, goods.find)
