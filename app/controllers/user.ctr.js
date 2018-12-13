@@ -9,6 +9,41 @@ const _filter = { pwd: 0, __v: 0 }
 
 export default class User {
 
+  static async loginRequire (ctx, next) {
+    const user = ctx.session.user
+    if (user) {
+      await next()
+    } else {
+      return ctx.body = {
+        success: false,
+        msg: '用户没有登录',
+        code: 401
+      }
+    }
+  }
+
+  // msgRead 将对方发给我的 Read 设置为 true
+  static async msgRead (ctx, next) {
+    const myID = ctx.session.user._id
+    const { from } = ctx.request.body
+    const result = await ChatModel.update(
+      { from: from, to: myID },
+      { $set: {read: true} },
+      {multi: true}
+    )
+    if (result.ok === 1) {
+      return ctx.body = {
+        success: true,
+        num: result.nModified
+      }
+    } else {
+      return ctx.body = {
+        success: false,
+        msg: '发生错误'
+      }
+    }
+  }
+
   // 用户消息列表
   static async msgList (ctx, next) {
     const user = ctx.session.user

@@ -8,7 +8,7 @@ router.prefix('/api/v1')
 
 /** user **/
 const USER_BASE_URL = '/user'
-router.get(USER_BASE_URL + '/info', user.info)
+router.get(USER_BASE_URL + '/info', user.loginRequire, user.info)
 router.get(USER_BASE_URL + '/list', user.list)
 router.post(USER_BASE_URL + '/register', user.register)
 router.post(USER_BASE_URL + '/login', user.login)
@@ -16,6 +16,8 @@ router.post(USER_BASE_URL + '/update', user.update)
 router.post(USER_BASE_URL + '/avatar', user.avatar)
 
 router.get(USER_BASE_URL + '/msg/list', user.msgList)
+router.post(USER_BASE_URL + '/msg/read', user.msgRead)
+
 
 /** goods **/
 const GOODS_BASE_URL = '/goods'

@@ -6,7 +6,10 @@ const ChatSchema = new mongoose.Schema({
   to: {type: String, require: true},
   read: {type: Boolean, default:false},
   content: {type: String, require:true},
-  create_time: {type: Number, default: new Date().getTime()}
+  create_time: {
+    type: Number, 
+    default: Date.now // () => new Date().getTime()
+  }
 })
 
 const Chat = mongoose.model('Chat', ChatSchema)
